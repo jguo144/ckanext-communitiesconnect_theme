@@ -1,0 +1,95 @@
+{% set title = g.site_title %}
+{% set intro = g.site_intro_text %}
+
+<div role="main">
+  <div class="main-carousel">
+    <div class="container">
+      <div class="row row1">
+        <div class="span6 col1">
+          <div class="module-content">
+            <h1 class="hero-text-heading heading">{{ title }}</h1>
+            <div class="hero-text-description secondary-heading">
+            {% if intro %}
+              {{ h.render_markdown(intro) }}
+            {% else %}
+              Get started by searching from <b>{{ h.communitiesconnect_dataset_count() }}</b> datasets
+            {% endif %}
+            </div>
+          </div>
+        </div>
+        <div class="span6 col1">
+          <div class="carousel-controls">
+            <a class="carousel-control left" href="#vizcarousel" data-slide="prev"><img src="/img/larrow.svg"></a>
+            <a class="carousel-control right" href="#vizcarousel" data-slide="next"><img src="/img/rarrow.svg"></a>
+          </div>
+          <div id="vizcarousel" class="carousel">
+            <div class="spinner"></div>
+            <div class="carousel-inner">
+              <div class="active item in" data-url="/render/viz-partial-dashboard-1" data-slide-number="0"></div>
+              <div class="item" data-url="/render/viz-partial-dashboard-2"></div>
+              <div class="item" data-url="/render/viz-partial-dashboard-3"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="main-search" style="padding-bottom:24px">
+    <div class="container">
+      <div class="row row2">
+        <div class="span12 col1">
+          {% snippet 'home/snippets/search.html' %}
+        </div>
+      </div>
+    </div>
+  </div>
+  {% if h.communitiesconnect_get_showcases() %}
+  <div class="main-featured">
+    <div class="container">
+      <div class="row">
+        <div class="span12 col1">
+          <div class="module-content box" style="padding-bottom:0px">
+            <h2 class="heading" style="margin-bottom:0px"><a href="/showcase">Showcases</a></h2>
+            {% snippet 'home/snippets/showcase_list.html', showcases=h.communitiesconnect_get_showcases() %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% if h.communitiesconnect_get_groups() %}
+  <div class="main-browse">
+    <div class="container">
+      <div class="row">
+        <div class="span12 col1">
+          <div class="module-content box">
+            <h2 class="heading"><a href="/group">Groups</a></h2>
+            {% for group in h.communitiesconnect_get_groups() %}
+              {% if group.package_count > 0 %}
+                <a href="/group/{{ group.name }}" class="browse-group">
+                  <img class="browse-group-image" src="{{ group.image_display_url or '/base/images/placeholder-group.png' }}">
+                  <div class="browse-group-title">
+                    {{ group.display_name }}
+                  </div>
+                </a>
+              {% endif %}
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  <div class="main-updates">
+    <div class="container">
+      <div class="row">
+        <div class="span6 col1">
+          {% snippet 'home/snippets/popular_datasets.html' %}
+        </div>
+        <div class="span6 col2">
+          {% snippet 'home/snippets/recent_datasets.html' %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
